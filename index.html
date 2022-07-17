@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="my-4">
+    <h3 class="text-center"> TODOs List</h3>
+    
+   </div>
+  
+   <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Update your task</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- <h6> Title </h6> 
+          <input type="text" id="tit">
+          <h6> Description </h6>
+          <input type="text" id=""> -->
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" id="tit" aria-describedby="emailHelp" placeholder="Enter Title Of Task">
+          </div>
+          <div class="form-group my-4" >
+            <label for="desc">Description</label>
+            <textarea class="form-control" id="de" rows="3"> </textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updateChanges()">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+   <div>
+       <!-- <h4> Title </h4>
+       <input type="text" id="title"/> 
+       <br>
+       <br>
+       <h4> Description </h4>
+       <input type="text" id="desc"/>
+        <br>
+       <button type="button" class="btn btn-primary my-4" id="add">ADD</button> -->
+       <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" class="form-control" id="title" aria-describedby="emailHelp" placeholder="Enter Title Of Task">
+      </div>
+      <div class="form-group my-4" >
+        <label for="desc">Description</label>
+        <textarea class="form-control" id="desc" rows="3"> </textarea>
+      </div>
+      <button type="button" class="btn btn-primary my-4" id="add">ADD</button>
+   </div>
+
+   <div> 
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody id="actialcontent">
+         
+          
+        </tbody>
+      </table>
+    </div>
+    <script>
+        var updateIndex;
+        update()
+       function updateChanges()
+       {
+                itemArray=JSON.parse(localStorage.getItem('jsonarray'));
+                itemArray[updateIndex][0]=document.getElementById('tit').value;
+                console.log(document.getElementById('de').value)
+                itemArray[updateIndex][1]=document.getElementById('de').value;
+                localStorage.setItem('jsonarray',JSON.stringify(itemArray));
+                update()
+
+       }
+       function updateToDo(index)
+       {
+          jsonArray=JSON.parse(localStorage.getItem('jsonarray'))
+          updateIndex=index
+          document.getElementById('tit').value=jsonArray[index][0];
+          document.getElementById('de').innerHTML=jsonArray[index][1];
+          console.log("inside update todo")
+       }
+       function deleted(index)
+       {
+             console.log("inside deleted: ",index)
+             itemArray=JSON.parse(localStorage.getItem('jsonarray'));
+             itemArray.splice(index,1);
+             localStorage.setItem('jsonarray',JSON.stringify(itemArray))
+             update();
+            //console.log('hello')
+       }
+       function update()
+        {
+               itemArray=JSON.parse(localStorage.getItem('jsonarray'));
+               str="";
+               itemArray.forEach((element,index) => {
+                   
+                        str+= `<tr>
+                        <th scope="row">${index+1}</th>
+                        <td>${element[0]}</td>
+                        <td>${element[1]}</td>
+                        <td> <button type="button" class="btn btn-primary my-4" onclick="deleted(${index})"> DELETE </button> 
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" onclick="updateToDo(${index})"> UPDATE
+                        </button></td>  
+                        </tr>`
+               });
+
+               document.getElementById('actialcontent').innerHTML=str;
+
+
+               
+        }
+        addbutton=document.getElementById('add');
+        addbutton.addEventListener('click',()=>
+        {
+              title=document.getElementById('title').value;
+              desc=document.getElementById('desc').value;
+           
+              //console.log('title: ',title," desc: ",desc);
+              if(localStorage.getItem('jsonarray')==null)
+              {
+                   itemArray=[];
+                   itemArray.push([title,desc]);
+                   localStorage.setItem('jsonarray',JSON.stringify(itemArray))
+              }
+              else{
+                   itemArray=JSON.parse(localStorage.getItem('jsonarray'));
+                   itemArray.push([title,desc]);
+                   localStorage.setItem('jsonarray',JSON.stringify(itemArray));
+              }
+              update()
+        })
+
+      
+     </script>
+
+
+</body>
+</html>
