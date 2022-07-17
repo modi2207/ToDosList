@@ -47,6 +47,32 @@
       </div>
     </div>
   </div>
+
+  <div class="modal fade" id="confirmDialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Confirm?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- <h6> Title </h6> 
+          <input type="text" id="tit">
+          <h6> Description </h6>
+          <input type="text" id=""> -->
+          <div class="form-group">
+            <label for="title">Are you sure to delete all task?</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="clearAll()">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
    <div>
        <!-- <h4> Title </h4>
        <input type="text" id="title"/> 
@@ -65,6 +91,9 @@
         <textarea class="form-control" id="desc" rows="3"> </textarea>
       </div>
       <button type="button" class="btn btn-primary my-4" id="add">ADD</button>
+      <!-- <button type="button" class="btn btn-primary my-4" id="confirmDialog">Clear All</button> -->
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmDialog"> Clear All
+      </button>
    </div>
 
    <div> 
@@ -86,6 +115,11 @@
     <script>
         var updateIndex;
         update()
+        function clearAll()
+        {
+              localStorage.clear();
+              update()
+        }
        function updateChanges()
        {
                 itemArray=JSON.parse(localStorage.getItem('jsonarray'));
@@ -132,6 +166,10 @@
 
                document.getElementById('actialcontent').innerHTML=str;
               }
+              else
+              {
+                document.getElementById('actialcontent').innerHTML="";
+              }
 
                
         }
@@ -155,7 +193,11 @@
               }
               update()
         })
-
+      //  clearButton=document.getElementById('clear');
+      //  clearButton.addEventListener('click',()=>
+      //  {
+               
+      //  })
       
      </script>
 
