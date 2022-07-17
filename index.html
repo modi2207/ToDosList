@@ -115,6 +115,7 @@
        }
        function update()
         {
+               if(localStorage.getItem('jsonarray')!=null){
                itemArray=JSON.parse(localStorage.getItem('jsonarray'));
                str="";
                itemArray.forEach((element,index) => {
@@ -130,7 +131,7 @@
                });
 
                document.getElementById('actialcontent').innerHTML=str;
-
+              }
 
                
         }
